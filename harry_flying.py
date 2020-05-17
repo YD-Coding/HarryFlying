@@ -1,45 +1,156 @@
-import pygame
+import pygame, sys
 import math
 import random
 from pygame import mixer
-from tkinter.messagebox import showerror
-running = False
-DracoVel = None
-SnitchSpeed = None
-BludgerX_change = None
-
-choice = int(input("What difficulty do you want to play? "))
-if choice == 1:
-    DracoVel = 4
-    SnitchSpeed = 115
-    BludgerX_change = 10
-    running = True
-elif choice == 2:
-    DracoVel = 6
-    BludgerX_change = 15
-    SnitchSpeed = 100
-    running = True
-elif choice == 3:
-    DracoVel = 8
-    BludgerX_change = 20
-    SnitchSpeed = 75
-    running = True
-elif choice == 4:
-    DracoVel = 165
-    BludgerX_change = 35
-    SnitchSpeed = 45
-    running = True
-elif choice == 5:
-    DracoVel = 30
-    BludgerX_change = 45
-    SnitchSpeed = 30
-    running = True
-
+from classes import Button
+menu_run = True
+BoostCounter = 100
+DracoVel = 6
+BludgerX_change = 15
+SnitchSpeed = 100
+running = None
+HasBoost = False
+main_win = None
+clock = pygame.time.Clock()
 pygame.init()
+pygame.font.init()
+
+def create_main_win():
+    global main_win
+    main_win = pygame.display.set_mode((1200, 750))
+
+
+
+
+play_button = Button((255, 255, 255), 170, 150, 300, 75, 'PLAY!', 72) 
+easy_diff = Button((98, 253, 135), 10, 400, 150, 42, 'EASY', 40)
+normal_diff = Button((0, 179, 255), 170, 400, 150, 42, 'NORMAL', 40)
+hard_diff = Button((255, 222, 0), 330, 400, 150, 42, 'HARD', 40)
+master_diff = Button((225, 0, 77), 490, 400, 150, 42, 'MASTER', 40)
+def menu():
+    
+    global running
+    global DracoVel
+    global SnitchSpeed
+    global BludgerX_change
+    menu_background = pygame.image.load("menu.background.png")
+    menu_win = pygame.display.set_mode((650, 500))
+    menu_cap = pygame.display.set_caption("MAIN MENU")            
+    menu_run = True
+    def redrawMenu():
+        play_button.draw(menu_win, (0, 0, 0))
+    
+        
+    while menu_run:
+        for event in pygame.event.get():
+            pos = pygame.mouse.get_pos()  
+            if event.type == pygame.QUIT:
+                menu_run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if play_button.isOver(pos):
+                    def redrawMenu():
+                        play_button.draw(menu_win, (0, 0, 0))
+                        easy_diff.draw(menu_win, (0, 0, 0))
+                        normal_diff.draw(menu_win, (0, 0, 0))
+                        hard_diff.draw(menu_win, (0, 0, 0))
+                        master_diff.draw(menu_win, (0, 0, 0))
+                    redrawMenu()
+                elif easy_diff.isOver(pos):
+                    menu_run = False
+                    DracoVel = 4
+                    SnitchSpeed = 115
+                    BludgerX_change = 10
+                    running = True
+                    create_main_win()
+                    pygame.display.update()
+                elif normal_diff.isOver(pos):
+                    menu_run = False
+                    DracoVel = 7
+                    BludgerX_change = 15
+                    SnitchSpeed = 90
+                    running = True
+                    create_main_win()
+                    pygame.display.update()
+                elif hard_diff.isOver(pos):
+                    menu_run = False
+                    DracoVel = 10
+                    BludgerX_change = 30
+                    SnitchSpeed = 50 
+                    running = True
+                    create_main_win()
+                    pygame.display.update()
+                elif master_diff.isOver(pos):
+                    menu_run = False
+                    DracoVel = 20
+                    BludgerX_change = 40
+                    SnitchSpeed = 25
+                    running = True
+                    create_main_win()
+                    pygame.display.update()
+                
+            if event.type == pygame.MOUSEMOTION:
+                if play_button.isOver(pos):
+                    play_button.color = (211,211,211)
+                elif easy_diff.isOver(pos):
+                    easy_diff.color = (255, 255, 255)
+                elif normal_diff.isOver(pos):
+                    normal_diff.color = (255, 255, 255)
+                elif hard_diff.isOver(pos):
+                    hard_diff.color = (255, 255, 255)
+                elif master_diff.isOver(pos):
+                    master_diff.color = (255, 0, 0)
+                else:
+                    play_button.color = (255, 255, 255)
+                    easy_diff.color = (98, 253, 135)
+                    normal_diff.color = (0, 179, 255)
+                    hard_diff.color = (255, 222, 0)
+                    master_diff.color = (225, 0, 77)
+                    #warning = pygame.font.SysFont('arial', 50)
+                    #warning_text = warning.render("", True, (0, 0, 0))
+                
+        # create_main_win()       
+        menu_win.blit(menu_background, (0,0))
+        redrawMenu()
+        pygame.display.update()
+ 
+
+
+menu()              
+
+
+
+    # DracoVel = 4
+    # SnitchSpeed = 115
+    # BludgerX_change = 10
+    # running = True
+
+    # DracoVel = 6
+    # BludgerX_change = 15
+    # SnitchSpeed = 100
+    # running = True
+
+    # DracoVel = 8
+    # BludgerX_change = 20
+    # SnitchSpeed = 75
+    # running = True
+
+    # DracoVel = 165
+    # BludgerX_change = 35
+    # SnitchSpeed = 45
+    # running = True
+
+    # DracoVel = 30
+    # BludgerX_change = 45
+    # SnitchSpeed = 30
+    # running = True
+
+
+
 GameState = True
 isDown = False
+
 # window, caption, background
-main_win = pygame.display.set_mode((1200, 750))
+
 main_cap = pygame.display.set_caption("QUIDDITCH")
 background = pygame.image.load("Quidditchpitch.png")
 
@@ -47,8 +158,8 @@ background = pygame.image.load("Quidditchpitch.png")
 HarryImage = pygame.image.load("harry-potter-quidditch-world-cup-broom-harry-potter-and-the-order-of-the-phoenix-harry-potter-png-clip-art.png")
 HarryX = 100
 HarryY = 150
-HarryVel = 10
-
+HarryVel = 12
+BoostCounter = 0
 def HarryFly():
     main_win.blit(HarryImage, (HarryX, HarryY))
 
@@ -174,20 +285,24 @@ def checkHealth(x, y):
         ScoreTextX = 475
         ScoreTextY = 400
     
-
-#not important but cool things
+timeShowBoost = random.randint(200, 250)
+screenTime = 0
 borderCount = 670
 
-      #main loop
-while running:
+rectX = 300
+rectY = 300
+    #main loop
 
+while running:
     main_win.blit(background, (0,0))
 
     #Quit
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
+        
+        
+    
     keys = pygame.key.get_pressed()
     # Harry Moves
     if keys[pygame.K_LEFT] and HarryX > 0:
@@ -198,9 +313,11 @@ while running:
         HarryY -= HarryVel
     if keys[pygame.K_DOWN] and HarryY < 575:
         HarryY += HarryVel
-    
+
+        
+        
     # Draco Shots Bludger
-    if Bludger_state is "ready":
+    if Bludger_state == "ready":
             BludgerY = DracoY
             shotbludger(BludgerX, BludgerY)
     if BludgerX < 0:
@@ -221,8 +338,6 @@ while running:
         DracoY += DracoVel
 
     
-
-
     HarryHurts = isHarryHurts(HarryX, HarryY, BludgerX, BludgerY)
     if HarryHurts:
         BludgerSound.play()
@@ -240,4 +355,7 @@ while running:
     showHealth(Health_textX, Health_textY)
     DracoFly()
     HarryFly()
+    
     pygame.display.update()
+    
+    

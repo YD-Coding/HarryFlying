@@ -11,9 +11,28 @@ SnitchSpeed = 100
 running = None
 HasBoost = False
 main_win = None
+ins_run = False
 clock = pygame.time.Clock()
 pygame.init()
 pygame.font.init()
+
+menu_background = pygame.image.load("menu.background.png")
+instructions_image = pygame.image.load("instructions.png")
+
+def instructions_win():
+    global ins_run
+    ins_run = True
+
+    instructions_win = pygame.display.set_mode((650,500))
+
+    while ins_run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                ins_run = False
+                menu()
+
+        instructions_win.blit(instructions_image,(0 ,0))
+        pygame.display.update()
 
 def create_main_win():
     global main_win
@@ -23,23 +42,25 @@ def create_main_win():
 
 
 play_button = Button((255, 255, 255), 170, 150, 300, 75, 'PLAY!', 72) 
-easy_diff = Button((98, 253, 135), 10, 400, 150, 42, 'EASY', 40)
-normal_diff = Button((0, 179, 255), 170, 400, 150, 42, 'NORMAL', 40)
-hard_diff = Button((255, 222, 0), 330, 400, 150, 42, 'HARD', 40)
-master_diff = Button((225, 0, 77), 490, 400, 150, 42, 'MASTER', 40)
+easy_diff = Button((98, 253, 135), 15, 100, 300, 125, 'EASY', 60)
+normal_diff = Button((0, 179, 255), 335, 100, 300, 125, 'NORMAL', 60)
+hard_diff = Button((255, 222, 0), 15, 250, 300, 125, 'HARD', 60)
+master_diff = Button((225, 0, 77), 335, 250, 300, 125, 'MASTER', 60)
+ins_button = Button((255,255,255), 170, 230, 300, 75, 'INSTRUCTIONS', 45)
+
 def menu():
     
     global running
     global DracoVel
     global SnitchSpeed
     global BludgerX_change
-    menu_background = pygame.image.load("menu.background.png")
+    
     menu_win = pygame.display.set_mode((650, 500))
     menu_cap = pygame.display.set_caption("MAIN MENU")            
     menu_run = True
     def redrawMenu():
         play_button.draw(menu_win, (0, 0, 0))
-    
+        ins_button.draw(menu_win, (0, 0, 0))
         
     while menu_run:
         for event in pygame.event.get():
@@ -49,7 +70,6 @@ def menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.isOver(pos):
                     def redrawMenu():
-                        play_button.draw(menu_win, (0, 0, 0))
                         easy_diff.draw(menu_win, (0, 0, 0))
                         normal_diff.draw(menu_win, (0, 0, 0))
                         hard_diff.draw(menu_win, (0, 0, 0))
@@ -87,6 +107,9 @@ def menu():
                     running = True
                     create_main_win()
                     pygame.display.update()
+                elif ins_button.isOver(pos):
+                    menu_run = False
+                    instructions_win()
                 
             if event.type == pygame.MOUSEMOTION:
                 if play_button.isOver(pos):
@@ -99,12 +122,15 @@ def menu():
                     hard_diff.color = (255, 255, 255)
                 elif master_diff.isOver(pos):
                     master_diff.color = (255, 0, 0)
+                elif ins_button.isOver(pos):
+                    ins_button.color = (211, 211, 211)
                 else:
                     play_button.color = (255, 255, 255)
                     easy_diff.color = (98, 253, 135)
                     normal_diff.color = (0, 179, 255)
                     hard_diff.color = (255, 222, 0)
                     master_diff.color = (225, 0, 77)
+                    ins_button.color = (255, 255, 255)
                     #warning = pygame.font.SysFont('arial', 50)
                     #warning_text = warning.render("", True, (0, 0, 0))
                 
@@ -116,6 +142,17 @@ def menu():
 
 
 menu()              
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -357,5 +394,3 @@ while running:
     HarryFly()
     
     pygame.display.update()
-    
-    

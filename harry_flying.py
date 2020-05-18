@@ -1,8 +1,26 @@
 import pygame, sys
 import math
 import random
+import os, winshell
+from win32com.client import Dispatch
 from pygame import mixer
 from classes import Button
+
+#! CREATE A FUNCTION TO CREATE A SHORTCUT - 
+def createShortcut(path, target='', wDir='', icon=''):    
+    shell = Dispatch('WScript.Shell')
+    shortcut = shell.CreateShortCut(path)
+    shortcut.Targetpath = target
+    shortcut.WorkingDirectory = wDir
+    if icon == '':
+        pass
+    else:
+        shortcut.IconLocation = icon
+    shortcut.save()
+
+#* Creating a "add shortcut" button
+#? you edit the button
+add_shortcut_button = Button((255, 255, 255), 410, 1, 240, 75, "Create Shortcut", 36)
 menu_run = True
 BoostCounter = 100
 DracoVel = 6
@@ -39,6 +57,7 @@ def menu():
     menu_run = True
     def redrawMenu():
         play_button.draw(menu_win, (0, 0, 0))
+        add_shortcut_button.draw(menu_win, (0, 0, 0))
     
         
     while menu_run:
@@ -87,6 +106,8 @@ def menu():
                     running = True
                     create_main_win()
                     pygame.display.update()
+                elif add_shortcut_button.isOver(pos):
+                    print("hello")
                 
             if event.type == pygame.MOUSEMOTION:
                 if play_button.isOver(pos):
@@ -158,7 +179,7 @@ background = pygame.image.load("Quidditchpitch.png")
 HarryImage = pygame.image.load("harry-potter-quidditch-world-cup-broom-harry-potter-and-the-order-of-the-phoenix-harry-potter-png-clip-art.png")
 HarryX = 100
 HarryY = 150
-HarryVel = 12
+HarryVel = 8
 BoostCounter = 0
 def HarryFly():
     main_win.blit(HarryImage, (HarryX, HarryY))

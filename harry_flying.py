@@ -1,3 +1,4 @@
+import os
 import pygame, sys
 import math
 import random
@@ -56,10 +57,10 @@ def create_main_win():
 
 
 play_button = Button((255, 255, 255), 170, 150, 300, 75, 'PLAY!', 72) 
-easy_diff = Button((98, 253, 135), 10, 400, 150, 42, 'EASY', 60)
-normal_diff = Button((0, 179, 255), 170, 400, 150, 42, 'NORMAL', 60)
-hard_diff = Button((255, 222, 0), 330, 400, 150, 42, 'HARD', 60)
-master_diff = Button((225, 0, 77), 490, 400, 150, 42, 'MASTER', 60)
+easy_diff = Button((98, 253, 135), 10, 400, 150, 42, 'EASY', 40)
+normal_diff = Button((0, 179, 255), 170, 400, 150, 42, 'NORMAL', 40)
+hard_diff = Button((255, 222, 0), 330, 400, 150, 42, 'HARD', 40)
+master_diff = Button((225, 0, 77), 490, 400, 150, 42, 'MASTER', 40)
 ins_button = Button((255,255,255), 600, 5, 45, 45, '?', 30)
 
 def menu():

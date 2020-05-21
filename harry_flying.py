@@ -55,7 +55,7 @@ def create_main_win():
 
 
 
-
+try_again_button = Button((100, 230, 53), 0, 0, 150, 40, "Try again", 36)
 play_button = Button((255, 255, 255), 170, 150, 300, 75, 'PLAY!', 72) 
 easy_diff = Button((98, 253, 135), 10, 400, 150, 42, 'EASY', 40)
 normal_diff = Button((0, 179, 255), 170, 400, 150, 42, 'NORMAL', 40)
@@ -324,10 +324,24 @@ def checkHealth(x, y):
     global ScoreTextX
     global ScoreTextY
     global ScoreText
+    global Health_value, Score
     if Health_value <= 0:
         GameState = False
         GameOverTextR = GameOverText.render("Game Over", True, (0, 0, 0))
         main_win.blit(GameOverTextR, (x, y))
+        try_again_button.draw(main_win, (0, 0, 0))
+        for event in pygame.event.get():
+            pos = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if try_again_button.isOver(pos):
+                    Health_value = 3
+                    Score = 0
+                    GameState = True
+                    running = False
+                    menu_run = True
+                    menu()
+                
+
         DracoX = 2000
         DracoY = 2000
         borderCount = 1070
